@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { GifsService } from '../service/gifs.service';
 
 @Component({
   selector: 'app-busqueda',
@@ -6,11 +7,19 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class BusquedaComponent implements OnInit {
+export class BusquedaComponent{
 
-  constructor() { }
+  @ViewChild('txtBuscar') txtBuscar!:ElementRef<HTMLInputElement>;
+  // ! es el operador de asercion no nula 
 
-  ngOnInit(): void {
+  constructor(private gifService:GifsService){}
+  buscar(){
+    const valor = this.txtBuscar.nativeElement.value;
+    if(valor.trim().length===0){//no prermite agregar cosas en blanco 
+      return;
+    }
+    this.gifService.buscarGifs(valor); //mandas el valor para que se almacene en el arreglo
+    this.txtBuscar.nativeElement.value="";
   }
 
 }
